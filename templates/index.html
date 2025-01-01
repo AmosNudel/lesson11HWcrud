@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{%block head%}
+<title>{%block title%}Pet Shop{%endblock%}</title>
+<style>
+    /* Scoped styles under #petShopPage to avoid clashes with external CSS */
+    #petShopPage {
+        margin-top: 2rem;
+    }
+
+    /* Styling for the pet list container */
+    #petShopPage #petsCards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    /* Individual pet card styling */
+    #petShopPage [id^="petCard-"] {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #petShopPage [id^="petCard-"]:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Styling for the delete button */
+    #petShopPage button {
+        background: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    #petShopPage button:hover {
+        background: #e60000;
+    }
+
+    /* Styling for the edit link */
+    #petShopPage a {
+        display: inline-block;
+        margin-top: 0.5rem;
+        color: #007acc;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    #petShopPage a:hover {
+        color: #005f99;
+    }
+
+    /* Center alignment for the heading */
+    #petShopPage h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+</style>
+{%endblock%}
+
+{%block content%}
+<div id="petShopPage">
+    <div id="petsCards">
+        {% for pet in pets %}
+        <div id="petCard-{{ pet.ID }}">
+            <strong>Name:</strong> {{ pet.Name }}<br>
+            <strong>Category:</strong> {{ pet.Category }}<br>
+            <strong>Price:</strong> ${{ pet.Price }}<br>
+            <button onclick="deletePet('{{ pet.ID }}')">Delete</button>
+            <a href='/upd/{{ pet.ID }}'>Edit</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<script>
+
+    const deletePet = (id) => {
+        axios.delete(`http://127.0.0.1:5000/del/${id}`)
+            .then(response => {
+                // Remove the pet card from the DOM
+                const petCard = document.getElementById(`petCard-${id}`);
+                if (petCard) {
+                    petCard.remove();  // Remove the pet card from the UI
+                }
+            })
+            .catch(error => {
+                // Handle the error if the pet was not found or if something goes wrong
+                alert("Error deleting pet: " + error.response.data.message);
+            });
+    }
+    
+    const updPet = (id) =>{
+
+    }
+
+</script>
+
+{%endblock%}

@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+{%block head%}
+<title>{%block title%}Edit Pet{%endblock%}</title>
+<style>
+    /* Scoped styles under #editPetPage to avoid clashes */
+    #editPetPage {
+        margin: 2rem auto;
+        max-width: 400px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Center the heading */
+    #editPetPage h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Style the input fields and dropdown */
+    #editPetPage input, #editPetPage select {
+        width: 100%;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    #editPetPage input:focus, #editPetPage select:focus {
+        border-color: #007acc;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
+    }
+
+    /* Style the submit button */
+    #editPetPage button {
+        width: 100%;
+        background-color: #007acc;
+        color: white;
+        border: none;
+        padding: 0.8rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #editPetPage button:hover {
+        background-color: #005f99;
+        transform: translateY(-2px);
+    }
+
+    #editPetPage button:active {
+        background-color: #004c80;
+        transform: translateY(0);
+    }
+</style>
+{%endblock%}
+
+{%block content%}
+<div id="editPetPage">
+    <h2>Edit {{pet.Name}} Information:</h2>
+    <div id="userInput">
+        <input type="text" id="petName" value="{{pet.Name}}"><br>
+        <label for="category">Choose a Category:</label>
+        <select id="petCategory" name="category">
+            <option value="dog" {% if pet.Category == 'dog' %}selected{% endif %}>Dog</option>
+            <option value="cat" {% if pet.Category == 'cat' %}selected{% endif %}>Cat</option>
+            <option value="bird" {% if pet.Category == 'bird' %}selected{% endif %}>Bird</option>
+            <option value="rabbit" {% if pet.Category == 'rabbit' %}selected{% endif %}>Rabbit</option>
+            <option value="fish" {% if pet.Category == 'fish' %}selected{% endif %}>Fish</option>
+        </select>
+        <br>
+        <input type="number" name="price" id="petPrice" value="{{pet.Price}}"><br>
+        <button onclick="updPet('{{pet.ID}}')">Submit</button>
+    </div>
+</div>
+
+<script>
+    const updPet = (id) => {
+        const petName = document.getElementById("petName").value;
+        const petCategory = document.getElementById("petCategory").value;
+        const petPrice = document.getElementById("petPrice").value;
+
+        axios.put(`http://127.0.0.1:5000/upd/${id}`, {
+            'Name': petName,
+            'Category': petCategory,
+            'Price': petPrice
+        })
+        .then(response => {
+            window.location.href = '/';
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Failed to update the pet.");
+        });
+    };
+</script>
+{%endblock%}

@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{%block head%}
+<title>{%block title%}Add Pet{%endblock%}</title>
+<style>
+    /* Scoped styles under #addPetPage to avoid clashes with other pages */
+    #addPetPage {
+        margin: 2rem auto;
+        max-width: 400px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Center the heading */
+    #addPetPage h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Style the input fields */
+    #addPetPage input, #addPetPage select {
+        width: 100%;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    #addPetPage input:focus, #addPetPage select:focus {
+        border-color: #007acc;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
+    }
+
+    /* Style the submit button */
+    #addPetPage button {
+        width: 100%;
+        background-color: #007acc;
+        color: white;
+        border: none;
+        padding: 0.8rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #addPetPage button:hover {
+        background-color: #005f99;
+        transform: translateY(-2px);
+    }
+
+    #addPetPage button:active {
+        background-color: #004c80;
+        transform: translateY(0);
+    }
+
+    /* Style the checkmark */
+    #addPetPage span {
+        display: inline-block;
+        margin-top: 1rem;
+        text-align: center;
+        width: 100%;
+    }
+</style>
+{%endblock%}
+
+{%block content%}
+<div id="addPetPage">
+    <h2>Add Pet Information:</h2>
+    <div id="userInput">
+        <input type="text" id="petName" placeholder="Pet Name:"><br>
+        <label for="category">Choose a Category:</label>
+        <select id="petCategory" name="category">
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="bird">Bird</option>
+            <option value="rabbit">Rabbit</option>
+            <option value="fish">Fish</option>
+        </select>
+        <br>
+        <input type="number" name="price" id="petPrice" placeholder="Pet Price:"><br>
+        <button onclick="addPet()">Submit</button>
+    </div>
+</div>
+
+<script>
+    const addPet = () => {
+        const petName = document.getElementById("petName").value
+        const petCategory = document.getElementById("petCategory").value
+        const petPrice = document.getElementById("petPrice").value
+        axios.post('http://127.0.0.1:5000/add', 
+        {
+            'Name': petName,
+            'Category': petCategory,
+            'Price': petPrice
+        })
+        .then(response => {
+            // Clear input fields
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+
+            // Create a checkmark element
+            const checkmark = document.createElement("span");
+            checkmark.innerHTML = "&#10004;";  // Unicode character for a checkmark
+            checkmark.style.color = "green";
+            checkmark.style.fontSize = "24px";
+            checkmark.style.marginTop = "10px";
+
+            // Append the checkmark below the input fields
+            const userInputDiv = document.getElementById("userInput");
+            userInputDiv.appendChild(checkmark);
+
+            // Optional: Hide the checkmark after 2 seconds
+            setTimeout(() => {
+                checkmark.style.display = "none";
+            }, 2000);
+        });
+    }
+</script>
+{%endblock%}
