@@ -74,7 +74,19 @@
         {% for pet in pets %}
         <div id="petCard-{{ pet.ID }}">
             <strong>Name:</strong> {{ pet.Name }}<br>
-            <strong>Category:</strong> {{ pet.Category }}<br>
+            <strong>Category:</strong> {{ pet.Category }}
+            {% if pet.Category == 'Dog'%}
+            <span>🐶</span>
+            {% elif pet.Category == 'Cat' %}
+            <span>🐱</span>
+            {% elif pet.Category == 'Bird' %}
+            <span>🐦</span>
+            {% elif pet.Category == 'Rabbit' %}
+            <span>🐇</span>
+            {% elif pet.Category == 'Fish' %}
+            <span>🐟</span>
+            {% endif %}
+            <br>
             <strong>Price:</strong> ${{ pet.Price }}<br>
             <button onclick="deletePet('{{ pet.ID }}')">Delete</button>
             <a href='/upd/{{ pet.ID }}'>Edit</a>

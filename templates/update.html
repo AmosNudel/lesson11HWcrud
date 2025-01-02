@@ -69,11 +69,11 @@
         <input type="text" id="petName" value="{{pet.Name}}"><br>
         <label for="category">Choose a Category:</label>
         <select id="petCategory" name="category">
-            <option value="dog" {% if pet.Category == 'dog' %}selected{% endif %}>Dog</option>
-            <option value="cat" {% if pet.Category == 'cat' %}selected{% endif %}>Cat</option>
-            <option value="bird" {% if pet.Category == 'bird' %}selected{% endif %}>Bird</option>
-            <option value="rabbit" {% if pet.Category == 'rabbit' %}selected{% endif %}>Rabbit</option>
-            <option value="fish" {% if pet.Category == 'fish' %}selected{% endif %}>Fish</option>
+            <option value="Dog" {% if pet.Category == 'dog' %}selected{% endif %}>Dog</option>
+            <option value="Cat" {% if pet.Category == 'cat' %}selected{% endif %}>Cat</option>
+            <option value="Bird" {% if pet.Category == 'bird' %}selected{% endif %}>Bird</option>
+            <option value="Rabbit" {% if pet.Category == 'rabbit' %}selected{% endif %}>Rabbit</option>
+            <option value="Fish" {% if pet.Category == 'fish' %}selected{% endif %}>Fish</option>
         </select>
         <br>
         <input type="number" name="price" id="petPrice" value="{{pet.Price}}"><br>
